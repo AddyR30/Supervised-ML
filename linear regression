@@ -15,8 +15,8 @@ plt.ylabel('Percentage Score')
 plt.show()
 
 #preparing data for learning
-x = list(df['Hours'])
-y = list(df['Scores'])
+x = df.iloc[:, :-1].values
+y = df.iloc[:, 1].values
 x_train, x_test, y_train, y_test = train_test_split(x, y, test_size = 0.2, random_state = 0)
 
 #using linear regression to train model 
@@ -25,7 +25,10 @@ model.fit(x_train, y_train)
 hypothesis = model.coef_ * x + model.intercept_
 
 #plotting the regression line
-plt.scatter(x, y)
+plt.scatter(x, y)  
+plt.title('Hours vs Percentage')  
+plt.xlabel('Hours Studied')  
+plt.ylabel('Percentage Score')
 plt.plot(x, hypothesis)
 plt.show()
 
@@ -35,5 +38,6 @@ df = pd.DataFrame({'Test': y_test, 'Predicted': y_pred})
 df
 
 #using the model to predict the score of a student from the number of hours they study
+score = model.predict([[9.25]])
 print('Hours = {}'.format(9.25))
-print('Percentage = {}'.format(model.predict(9.25))
+print('Percentage = {}'.format(score[0]))
