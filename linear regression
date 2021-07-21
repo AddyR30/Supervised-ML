@@ -1,0 +1,39 @@
+#importing the required libraries
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+
+#reading dataset using pandas
+df = pd.read_csv('https://raw.githubusercontent.com/AdiPersonalWorks/Random/master/student_scores%20-%20student_scores.csv')
+
+#visualising the distribution of data
+df.plot(x='Hours', y='Scores', style='o')  
+plt.title('Hours vs Percentage')  
+plt.xlabel('Hours Studied')  
+plt.ylabel('Percentage Score')  
+plt.show()
+
+#preparing data for learning
+x = list(df['Hours'])
+y = list(df['Scores'])
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size = 0.2, random_state = 0)
+
+#using linear regression to train model 
+model = LinearRegression()
+model.fit(x_train, y_train)
+hypothesis = model.coef_ * x + model.intercept_
+
+#plotting the regression line
+plt.scatter(x, y)
+plt.plot(x, hypothesis)
+plt.show()
+
+#test data vs predicted data
+y_pred = model.predict(x_test)
+df = pd.DataFrame({'Test': y_test, 'Predicted': y_pred})
+df
+
+#using the model to predict the score of a student from the number of hours they study
+print('Hours = {}'.format(9.25))
+print('Percentage = {}'.format(model.predict(9.25))
